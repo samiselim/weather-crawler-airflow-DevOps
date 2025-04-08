@@ -1,0 +1,25 @@
+
+executor: LocalExecutor
+dags:
+  persistence:
+    enabled: false
+
+web:
+  extraVolumes:
+    - name: dag-hostpath
+      hostPath:
+        path: /mnt/airflow-dags
+  extraVolumeMounts:
+    - name: dag-hostpath
+      mountPath: /opt/airflow/dags
+      readOnly: true
+
+scheduler:
+  extraVolumes:
+    - name: dag-hostpath
+      hostPath:
+        path: /mnt/airflow-dags
+  extraVolumeMounts:
+    - name: dag-hostpath
+      mountPath: /opt/airflow/dags
+      readOnly: true
