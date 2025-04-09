@@ -4,7 +4,7 @@ dags:
   persistence:
     enabled: false
 
-web:
+webserver:
   extraVolumes:
     - name: dag-hostpath
       hostPath:
@@ -14,6 +14,13 @@ web:
       mountPath: /opt/airflow/dags
       readOnly: true
 
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "512Mi"
+    limits:
+      cpu: "1000m"
+      memory: "1Gi"
 scheduler:
   extraVolumes:
     - name: dag-hostpath
