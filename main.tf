@@ -6,15 +6,7 @@ terraform {
   }
 }
 
-# resource "kubectl_manifest" "cert_manager_crds" {
-#   for_each = {
-#     for idx, file in fileset("${path.module}/cert-manager-crds", "*.yaml") :
-#     file => file
-#   }
-#   yaml_body = file("${path.module}/cert-manager-crds/${each.value}")
-# }
 resource "helm_release" "cert_manager" {
-  # depends_on = [kubectl_manifest.cert_manager_crds]
 
   name       = "cert-manager"
   repository = "https://charts.jetstack.io"
@@ -25,7 +17,7 @@ resource "helm_release" "cert_manager" {
 
   set {
     name  = "installCRDs"
-    value = "true" # We already installed them with kubectl
+    value = "true" 
   }
 }
 
@@ -113,47 +105,6 @@ provider "helm" {
 provider "kubectl" {
   config_path = "/etc/rancher/rke2/rke2.yaml"
 }
-
-# provider "helm" {
-#   kubernetes {
-#     config_path = "/etc/rancher/rke2/rke2.yaml"
-#   }
-# }
-# resource "helm_release" "cert_manager" {
-#   name             = "cert-manager"
-#   repository       = "https://charts.jetstack.io"
-#   chart            = "cert-manager"
-#   namespace        = "cert-manager"
-#   create_namespace = true
-
-#   set {
-#     name  = "crds.enabled"
-#     value = "true"
-#   }
-#    set {
-#     name  = "startupapicheck.enabled"
-#     value = "false"
-#   }
-#   timeout = 600
-# }
-
-# resource "helm_release" "rancher" {
-#   name       = "rancher"
-#   namespace  = "cattle-system"
-#   repository = "https://releases.rancher.com/server-charts/latest"
-#   chart      = "rancher"
-#   create_namespace = true
-
-#   set {
-#     name  = "hostname"
-#     value = "rancher.localhost"
-#   }
-
-#   set {
-#     name  = "replicas"
-#     value = "1"
-#   }
-# }
 
 
 ## createing storage class t
